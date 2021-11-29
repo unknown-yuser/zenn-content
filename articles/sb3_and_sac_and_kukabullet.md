@@ -13,21 +13,20 @@ Stable-baselines3 は容易に強化学習アルゴリズムを使えるよう�
 本記事は Stable-baselines3 で Soft Actor-Critic を使った一例というつもりでいます。
 
 なお、筆者は専門家でもないので至らないところがあります。もし間違い等あればご指摘をおねがいします。
-また、この記事は強化学習関連の記事ですが、強化学習とは何かの説明はしていません。そちらについて知りたい方は例えば[こちら](https://qiita.com/ikeyasu/items/67dcddce088849078b85) をご覧ください。
 
 # 前提知識
 
-## Stable-baselines3
+## Stable-Baselines3
 
 - Github: [リンク](https://github.com/DLR-RM/stable-baselines3)
 - Document: [リンク](https://stable-baselines3.readthedocs.io/en/master/)
 - Blog: [リンク](https://araffin.github.io/post/sb3/)
 
-Stable-baselines3 はメジャーな深層強化学習まとまった実装のセットで「Stable-Baselines」の次にメジャーバージョンとなります。 ( Stable-Baselines は OpenAI Baselines をフォークして大規模なリファクタリングを実行し、さらにいくつかの強化学習アルゴリズムを追加したものになります。 )
+Stable-Baselines3 はメジャーな深層強化学習まとまった実装のセットで「Stable-Baselines」の次にメジャーバージョンとなります。 ( Stable-Baselines は OpenAI Baselines をフォークして大規模なリファクタリングを実行し、さらにいくつかの強化学習アルゴリズムを追加したものになります。 )
 
-arxiv などで最新の強化学習アルゴリズムの発表を目にすることができますが、実装の詳細が記載されていないこともあって再現させることが難しい場合があります。Stable-baselines3 が信頼性の高い高品質な実装を提供することで再現性の難しさを乗り越える手助けをしてくれます。
+arxiv などで最新の強化学習アルゴリズムの発表を目にすることができますが、実装の詳細が記載されていないこともあって再現させることが難しい場合があります。Stable-Baselines3 が信頼性の高い高品質な実装を提供することで再現性の難しさを乗り越える手助けをしてくれます。
 
-Stable-baselines3 は次の特徴を備えており、非常に使いやすいライブラリとなっています。
+Stable-Baselines3 は次の特徴を備えており、非常に使いやすいライブラリとなっています。
 
 - すべてのアルゴリズムに統一した構造
 - 統一された PEP8コードスタイル
@@ -73,9 +72,9 @@ Box, Discrete, MultiDiscrete, MultiBinary の説明に関しては[こちら](ht
 
 ### PyBullet
 
-PyBullet は物理エンジンの一つで C++ で書かれた Bullet Physics を Python で使えるようにしたものです。ロボティクスや強化学習、VR で使うことが出来ます。[PyBullet Quick Guide](https://docs.google.com/document/d/10sXEhzFRSnvFcl3XxNGhnD4N2SedqwdAvK3dsihxVUA/edit#heading=h.2ye70wns7io3)に PyBullet の関数やクラスの一覧を見ることができたり、強化学習のための PyBullet環境の使い方の説明が記載されています。PyBullet環境を使ってみようという動機としてはロボットシミュレーション環境を試してみたいというのがあったりします。
+[PyBullet](https://pybullet.org/wordpress/) は物理エンジンの一つで C++ で書かれた Bullet Physics を Python で使えるようにしたものです。ロボティクスや強化学習、VR で使うことが出来ます。[PyBullet Quick Guide](https://docs.google.com/document/d/10sXEhzFRSnvFcl3XxNGhnD4N2SedqwdAvK3dsihxVUA/edit#heading=h.2ye70wns7io3)に PyBullet の関数やクラスの一覧を見ることができたり、強化学習のための PyBullet環境の使い方の説明が記載されています。PyBullet環境を使ってみようという動機としてはロボットシミュレーション環境を試してみたいというのがあったりします。
 
-強化学習で使えるロボットシミュレーション環境には他に Mujoco がありますが、以前は商用ライセンスが必要でした。そして研究用途以外で個人で出来るだけ無償で使える環境を使いたいとなれば Mujoco の代わりに PyBullet を使うという選択肢がありました。最近はライセンスの購入が必要なく [Apache License 2.0](https://github.com/deepmind/mujoco/blob/1f7eaae62e0cd45a71cf7a593fa5605720765167/LICENSE) で利用できるようになっています。(mujoco-pyも[更新済み](https://github.com/openai/mujoco-py/pull/640)です。)
+強化学習で使えるロボットシミュレーション環境には他に Mujoco がありますが、以前は商用ライセンスが必要でした。そして研究用途以外で個人で出来るだけ無償で使える環境を使いたいとなれば Mujoco の代わりに PyBullet を使うという選択肢がありました。最近はライセンスの購入が必要なく [Apache License 2.0](https://github.com/deepmind/mujoco/blob/1f7eaae62e0cd45a71cf7a593fa5605720765167/LICENSE) で利用できるようになっています。(mujoco-pyも[マージ済み](https://github.com/openai/mujoco-py/pull/640)です。)
 
 ### Kuka
 
@@ -121,23 +120,21 @@ TODO: tensorboard の結果を表示
 環境の実装は次のようにしています。
 
 ```python
-class ImageObservationWrapper(gym.Wrapper):
+class AssignTypeWrapper(gym.Wrapper):
     def __init__(self, env: gym.Env):
-        super(ImageObservationWrapper, self).__init__(env)
-        self.observation_space = gym.spaces.Box(low=0, high=255, shape=env.observation_space.shape, dtype=np.uint8)
+        super(AssignTypeWrapper, self).__init__(env)
+        low = env.observation_space.low
+        high = env.observation_space.high
+        shape = env.observation_space.shape
+        self.observation_space = gym.spaces.Box(low=low, high=high, shape=shape, dtype=np.uint8)
 
-env = gym.make("KukaDiverseObjectGrasping-v0",
-                maxSteps=20,
-                isDiscrete=False,
-                renders=False,
-                removeHeightHack=True)
-env = ImageObservationWrapper(env)
-env = Monitor(env, result_path)
-env = DummyVecEnv([lambda: env])
-env = VecTransposeImage(env)
+    env = gym.make("KukaDiverseObjectGrasping-v0", maxSteps=20, isDiscrete=False, renders=False, removeHeightHack=True)
+    env = AssignTypeWrapper(env)
+    env = Monitor(env, filename=filename)
+    env = VecTransposeImage(DummyVecEnv([lambda: env]))
 ```
 
-ここで注意したいのは `ImageObservationWrapper` です。Kuka の状態空間は確かに 0-255 の整数値をとるように設計されているのですが、型が`numpy.float32`となっています。画像を入力とする場合は入力の型を `numpy.uint8`にしなければなりません [(Noteを参照)](https://stable-baselines3.readthedocs.io/en/master/guide/custom_env.html#using-custom-environments)。そのため `ImageObservationWrapper` では明示的に型が `numpy.uint8` であることを指定するようにしています。
+ここで `AssignTypeWrapper` を簡単に説明しますと、Kuka の状態空間は確かに 0-255 の整数値をとるように設計されているのですが、型が`np.float32`となっています。画像を入力とする場合は入力の型を `np.uint8`にしなければなりません [(Noteを参照)](https://stable-baselines3.readthedocs.io/en/master/guide/custom_env.html#using-custom-environments)。そのため `AssignTypeWrapper` では明示的に型が `np.uint8` であることを指定するようにしています。
 
 
 ## 学習
