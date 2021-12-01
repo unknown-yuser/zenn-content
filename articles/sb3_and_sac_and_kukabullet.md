@@ -24,7 +24,7 @@ Stable-baselines3 は容易に強化学習アルゴリズムを使えるよう�
 
 Stable-Baselines3 はメジャーな深層強化学習まとまった実装のセットで「Stable-Baselines」の次にメジャーバージョンとなります。 ( Stable-Baselines は OpenAI Baselines をフォークして大規模なリファクタリングを実行し、さらにいくつかの強化学習アルゴリズムを追加したものになります。 )
 
-arxiv などで最新の強化学習アルゴリズムの発表を目にすることができますが、実装の詳細が記載されていないこともあって再現させることが難しい場合があります。Stable-Baselines3 が信頼性の高い高品質な実装を提供することで再現性の難しさを乗り越える手助けをしてくれます。
+arxiv などで最新の強化学習アルゴリズムの発表を目にすることができますが、実装の詳細が記載されていないこともあって再現させることが難しい場合があります。Stable-Baselines3 が信頼性の高い高品質な実装を提供することで再現性の難しさを回避することが出来ます。
 
 Stable-Baselines3 は次の特徴を備えており、非常に使いやすいライブラリとなっています。
 
@@ -46,7 +46,7 @@ Stable-Baselines3 は次の特徴を備えており、非常に使いやすい�
 - arxiv: [リンク1](https://arxiv.org/abs/1801.01290), [リンク2](https://arxiv.org/abs/1812.05905)
 - Github: [リンク](https://github.com/haarnoja/sac)
 
-Soft Actor-Critic は有名な強化学習アルゴリズムの一つだとおもいます。このアルゴリズムの詳細な説明は他にわかりやすい適切な記事が沢山存在するのでここでは簡単な特徴のみ触れようと思います。
+Soft Actor-Critic は有名な強化学習アルゴリズムの一つです。このアルゴリズムの詳細な説明は他にわかりやすい適切な記事が沢山存在するのでここでは簡単な特徴のみ触れようと思います。
 
 ### 方策ON型(On-policy) vs 方策OFF型(Off-policy)
 
@@ -92,28 +92,31 @@ KukaDiverseObjectGrasping-v0 は実際には「[KukaDiverseObjectEnv](https://gi
 - `removeHeightHack`: エンドエフェクタの高さ方向の制御を自動にするか、入力にするか。
 - `isTest`: トレイに入れるオブジェクトをtrain setから選ぶか、test setから選ぶか。
 
-があります。この記事で紹介する実装では連続的な行動を扱うので `isDiscrete=True`としました。また、少し複雑なタスクを試してみようと思い `removeHeightHack=True` としています。 またロボットアームが左右に振り続けてエビソードの終端につかない可能性もあるので `maxSteps=20` と制限をかけることにしまいした。
+があります。この記事で紹介する実装では連続的な行動を扱うので `isDiscrete=True`としました。また、少し複雑なタスクを試してみようと思い `removeHeightHack=True` としています。 また例えばロボットアームが左右に振り続けるというようなエビソードの終端につかない可能性もあるので `maxSteps=20` と制限をかけることにしまいした。
 
-KukaDiverseObjectGrasping-v0 における状態はデフォルトではそれぞれの画素値が0~255でサイズが48x48, 3チャンネルの画像になります。また行動はそれぞれ最小 -1, 最大 -1 の4次元ベクトルでエンドエフェクタのxyzの位置と回転角度の変化量となります。
+KukaDiverseObjectGrasping-v0 における状態(state)はデフォルトではそれぞれの画素値が0~255でサイズが48x48, 3チャンネルの画像になります。また行動(action)はそれぞれ最小 -1, 最大 -1 の4次元ベクトルでエンドエフェクタのxyzの移動量と回転角度の変化量となります。
 
 ロボットアームはオブジェクトをつかめる高さまでになるとエンドエフェクタは自動的に閉じる動作を行うようになります。また、報酬は物体をつかめた時だけ 1 と返し、そのほかは 0 を返します。
 
 # 実装と解説
 
-## 課題と学習結果
+## 課題内容と学習結果
 
 ロボットアームがトレイに入っているオブジェクトを掴む課題を解きます。
-作成した実装は雑ですが[Github](https://github.com/unknown-yuser/SAC_KukaDiverseObject)に残しています。
+作成した実装は[Github](https://github.com/unknown-yuser/SAC_KukaDiverseObject)に残しています。(README.mdは今後追加する予定)
 
-### ビデオ
+### 実演
 
-10 回中 6 回成功しています。実用できないレベルですが、それなりに学習はできているようです。
+学習した結果の様子を映像で確認してみると確かに上手くオブジェクトを掴むことが出来ていますね。
 
 ![](/images/kuka_grasp_sac.gif)
 
-### グラフ
+ただ、実際は毎回成功するわけではないです。
+[実際に記録したファイル](https://github.com/unknown-yuser/zenn-content/blob/main/ext/kuka_grasp_sac.mp4) では 10 回中 6 回成功するという結果で終わっています。まだまだ工夫が必要なようです。
 
-Stable-Baselines3 では学習が進んでいる様子を TensorBoard を使って記録することが容易です。
+### TensorBoard
+
+Stable-Baselines3 では学習が進んでいる様子を TensorBoard を使って容易に記録することができます。
 [TensorBoard.dev](https://tensorboard.dev/experiment/yzZqd0JxR2Guv8ry1nSGiA/#scalars) にアップロードしているのでご覧ください。
 
 およそ 30000 ステップ超えるあたりまで行動の価値の学習が進み、30000 ステップ進んだ後あたりから徐々に適切な行動を学び始めている感じがします。
@@ -170,7 +173,7 @@ sac_net_policy_kwargs = dict(
 
 ![](/images/dnn_layers.jpg)
 
-(図はStable-Baseline3 の画像を参照)
+(図はStable-Baseline3 の画像を基に作成)
 
 Custom Policy の詳細な説明については[こちら](https://stable-baselines3.readthedocs.io/en/master/guide/custom_policy.html)をご覧ください。
 
