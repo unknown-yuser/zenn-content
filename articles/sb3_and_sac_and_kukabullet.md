@@ -112,7 +112,7 @@ KukaDiverseObjectGrasping-v0 における状態(state)はデフォルトでは�
 ![](/images/kuka_grasp_sac.gif)
 
 ただ、実際は毎回成功するわけではないです。
-[実際に記録したファイル](https://github.com/unknown-yuser/zenn-content/blob/main/ext/kuka_grasp_sac.mp4) では 10 回中 6 回成功するという結果で終わっています。まだまだ工夫が必要なようです。
+[実際に記録したファイル](https://github.com/unknown-yuser/SAC_KukaDiverseObject/blob/main/output/video/kuka_grasp_sac.mp4) では 10 回中 6 回成功するという結果で終わっています。まだまだ工夫が必要なようです。
 
 ### TensorBoard
 
