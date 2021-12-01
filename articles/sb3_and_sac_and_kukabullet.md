@@ -3,7 +3,7 @@ title: "Stable-baselines3 x Soft Actor-Critic x KukaDiverseObject"
 emoji: ""
 type: "tech"
 topics: ["Stable-baselines3", "Soft Actor-Critic", "Kuka", "PyBullet", "強化学習", "深層強化学習"]
-published: false
+published: true
 ---
 
 # この記事は何？
@@ -22,7 +22,7 @@ Stable-baselines3 は容易に強化学習アルゴリズムを使えるよう�
 - Document: [リンク](https://stable-baselines3.readthedocs.io/en/master/)
 - Blog: [リンク](https://araffin.github.io/post/sb3/)
 
-Stable-Baselines3 はメジャーな深層強化学習まとまった実装のセットで「Stable-Baselines」の次にメジャーバージョンとなります。 ( Stable-Baselines は OpenAI Baselines をフォークして大規模なリファクタリングを実行し、さらにいくつかの強化学習アルゴリズムを追加したものになります。 )
+Stable-Baselines3 はメジャーな深層強化学習まとまった実装のセットで「Stable-Baselines」の次のメジャーバージョンとなります。 ( Stable-Baselines は OpenAI Baselines をフォークして大規模なリファクタリングを実行し、さらにいくつかの強化学習アルゴリズムを追加したものになります。 )
 
 arxiv などで最新の強化学習アルゴリズムの発表を目にすることができますが、実装の詳細が記載されていないこともあって再現させることが難しい場合があります。Stable-Baselines3 が信頼性の高い高品質な実装を提供することで再現性の難しさを回避することが出来ます。
 
@@ -39,7 +39,7 @@ Stable-Baselines3 は次の特徴を備えており、非常に使いやすい�
 - Tensorboard をサポート
 - それぞれのアルゴリズムのパフォーマンスがテストされている
   - _Stable-Baselines3 (SB3) is a library providing reliable implementations of reinforcement learning algorithms in PyTorch._
-  - 例えば Blog の __High-Quality Implementations__ を見ると Stable-baselines3を使った実行結果とオリジナルの実行結果の比較が載っています。
+  - 例えば Blog の __High-Quality Implementations__ を見ると Stable-baselines3を使った実行結果とオリジナルの実行結果の比較が載っていてほぼ同じ性能であることが確認できます。
 
 ## Soft Actor-Critic
 
@@ -64,7 +64,7 @@ Soft Actor-Critic は方策OFF型の強化学習アルゴリズムになりま�
 
 Box, Discrete, MultiDiscrete, MultiBinary の説明に関しては[こちら](https://note.com/npaka/n/n784a13c44fa7)を参照すると良いと思います。Stable-baselines3 においてSoft Actor-Critic は行動が連続値をとる場合でしか使えないことになります。
 
-ただし [SAC-Discrete](https://arxiv.org/abs/1910.07207) という論文はあり、実際は離散行動に Soft Actor-Critic を適用することも可能という考えもあります。
+ただし [SAC-Discrete](https://arxiv.org/abs/1910.07207) という論文もあり、実際は離散行動に Soft Actor-Critic を適用することも可能という考えもあります。
 
 ## PyBullet (Kuka)
 
