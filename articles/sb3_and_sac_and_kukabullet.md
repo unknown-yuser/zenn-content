@@ -109,10 +109,7 @@ KukaDiverseObjectGrasping-v0 における状態はデフォルトではそれぞ
 
 10 回中 6 回成功しています。実用できないレベルですが、それなりに学習はできているようです。
 
-<video width="320" height="240" controls>
-  <source src="/res/kuka_grasp_sac.mp4" type="video/mp4">
-</video>
-
+https://github.com/unknown-yuser/zenn-content/blob/main/images/kuka_grasp_sac.mp4
 
 ### グラフ
 
@@ -171,7 +168,7 @@ sac_net_policy_kwargs = dict(
 
 最終的にこのネットワークは次のような構成になっています。
 
-![](/res/dnn_arch.JPG)
+![](/images/dnn_arch.JPG)
 
 (図はStable-Baseline3 の画像を参照)
 
