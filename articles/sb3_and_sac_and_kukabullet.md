@@ -109,7 +109,7 @@ KukaDiverseObjectGrasping-v0 における状態はデフォルトではそれぞ
 
 10 回中 6 回成功しています。実用できないレベルですが、それなりに学習はできているようです。
 
-https://github.com/unknown-yuser/zenn-content/blob/main/images/kuka_grasp_sac.mp4
+https://github.com/unknown-yuser/zenn-content/blob/main/movie/kuka_grasp_sac.gif
 
 ### グラフ
 
