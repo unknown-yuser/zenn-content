@@ -60,9 +60,7 @@ Soft Actor-Critic は方策OFF型の強化学習アルゴリズムになりま�
 
 行動には離散値をとるものと連続値をとるものがあります。離散値をとるものには例えばゲームのコマンド入力があります。一方で連続値をとるものには例えばロボットのモータなどのアクチュエータの制御があります。
 
-強化学習アルゴリズムの中には連続値をとる行動しか扱えないものや逆に離散値をとる行動しか使えないものもあります。Stable-baselines3 に含まれるアルゴリズムにおいては以下のようになっています。
-
-TODO: 図を挿入
+強化学習アルゴリズムの中には連続値をとる行動しか扱えないものや逆に離散値をとる行動しか使えないものもあります。Stable-baselines3 に含まれるアルゴリズムにおいては[こちら](https://github.com/DLR-RM/stable-baselines3#implemented-algorithms)にまとまっています。
 
 Box, Discrete, MultiDiscrete, MultiBinary の説明に関しては[こちら](https://note.com/npaka/n/n784a13c44fa7)を参照すると良いと思います。Stable-baselines3 においてSoft Actor-Critic は行動が連続値をとる場合でしか使えないことになります。
 
@@ -109,11 +107,19 @@ KukaDiverseObjectGrasping-v0 における状態はデフォルトではそれぞ
 
 ### ビデオ
 
-TODO: ビデオの表示
+10 回中 6 回成功しています。実用できないレベルですが、それなりに学習はできているようです。
+
+<video width="320" height="240" controls>
+  <source src="/res/kuka_grasp_sac.mp4" type="video/mp4">
+</video>
+
 
 ### グラフ
 
-TODO: tensorboard の結果を表示
+Stable-Baselines3 では学習が進んでいる様子を TensorBoard を使って記録することが容易です。
+[TensorBoard.dev](https://tensorboard.dev/experiment/yzZqd0JxR2Guv8ry1nSGiA/#scalars) にアップロードしているのでご覧ください。
+
+およそ 30000 ステップ超えるあたりまで行動の価値の学習が進み、30000 ステップ進んだ後あたりから徐々に適切な行動を学び始めている感じがします。
 
 ## 環境の実装
 
@@ -163,7 +169,11 @@ sac_net_policy_kwargs = dict(
 
 `features_extractor_class` の値である `NatureCNN` は Stable-baselines3 に実装されている CNN で3つの畳み込み層と1つのFC層によって構成されたニューラルネットワークです。
 
-最終的にこのネットワークは次のような構成になっています。(TODO: 図の挿入)
+最終的にこのネットワークは次のような構成になっています。
+
+![](/res/dnn_arch.JPG)
+
+(図はStable-Baseline3 の画像を参照)
 
 Custom Policy の詳細な説明については[こちら](https://stable-baselines3.readthedocs.io/en/master/guide/custom_policy.html)をご覧ください。
 
