@@ -168,7 +168,7 @@ sac_net_policy_kwargs = dict(
 
 最終的にこのネットワークは次のような構成になっています。
 
-![](/images/dnn_arch.JPG)
+![](/images/dnn_layers.jpg)
 
 (図はStable-Baseline3 の画像を参照)
 
