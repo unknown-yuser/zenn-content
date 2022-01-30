@@ -201,7 +201,7 @@ for (i, (parameter, solution)) in enumerate(solutions)
     ax_pos = axes[i, 1].get_position()
     xpos = ax_pos.x0 - 0.1
     ypos = 0.5 * (ax_pos.y0 + ax_pos.y1)
-    fig.text(x=xpos, y=ypos, s=parameters[i], size=18)
+    fig.text(x=xpos, y=ypos, s=string("ϵ=",parameters[i]), size=18)
 end
 
 axes[1, 1].set_title("time-series", y=1.1, size=18)
