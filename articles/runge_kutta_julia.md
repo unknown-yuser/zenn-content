@@ -3,7 +3,7 @@ title: "Julia入門者がJuliaで微分方程式を解いてみる"
 emoji: ""
 type: "tech"
 topics: ["Julia", "Runge-Kutta法", "微分方程式", "非線形微分方程式", "自由振動", "van der Pol振動子"]
-published: false
+published: true
 ---
 
 最近 Julia に入門し始めました。これはその記念記事?です。
