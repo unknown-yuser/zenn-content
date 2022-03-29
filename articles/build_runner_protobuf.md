@@ -6,6 +6,10 @@ topics: ["Flutter", "Dart", "protobuf", "build_runner"]
 published: false
 ---
 
+# はじめに
+
+protoファイルに対して `protoc --dart_out=grpc:path/to/generated -I protos source.proto` というコマンドを実行すると dart ファイルが自動生成される。しかし、dart や flutter には **build_runner** というdartコードを自動生成するパッケージがあり、これを使うことがdartの文化に沿うように思える。そこで proto ファイルを build_runner を通してdartコードを生成する方法を調査した。
+
 # プロジェクト構成
 
 ```
