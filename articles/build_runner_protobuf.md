@@ -8,9 +8,15 @@ published: false
 
 # はじめに
 
-protoファイルに対して `protoc --dart_out=grpc:path/to/generated -I protos source.proto` というコマンドを実行すると dart ファイルが自動生成される。しかし、dart や flutter には **build_runner** というdartコードを自動生成するパッケージがあり、これを使うことがdartの文化に沿うように思える。そこで proto ファイルを build_runner を通してdartコードを生成する方法を調査した。
+protoファイルに対して `protoc --dart_out=grpc:path/to/generated -I protos source.proto` というコマンドを実行すると dartファイルが自動生成される。しかし、dart や flutter には **build_runner** というdartコードを自動生成するパッケージがあり、これを使うことがdartの文化に沿うように思える。そこで proto ファイルを build_runner を通してdartコードを生成する方法を調査した。
+
+# 準備
+
+`protoc` は呼び出せるようにする。
 
 # プロジェクト構成
+
+dartコードを自動生成するためには `build.yaml` が必要。`build.yaml` ではdartコードを自動生成するための関数を指定したり、コンパイルの対象となるディレクトリを指定することができる。
 
 ```
 yourApp
@@ -19,10 +25,9 @@ yourApp
 .
 .
 ├─lib
-│  ├─build_tool
-│  │  └─builder.dart
+│  ├─builder.dart
 │  └─main.dart
-├─protocol
+├─proto
 │  └─hello.proto
 ├─test
 ├─build.yaml
@@ -32,12 +37,22 @@ yourApp
 .
 ```
 
-build.yaml
-```
+# build.yaml
+
+<!-- TODO: 以下の説明を追加
+    1. myBuilderGenerator とは?
+    2. buiderの取得方法
+    3. 拡張子によるフィルター
+    4. auto_apply / build_to の説明
+    5. 出力先を指定するために options を追加
+    6. ソースを指定するために targets を追加
+ -->
+
+```.yaml
 builders:
   # Generator for protobuf
   mybuilderGenerator:
-    import: 'package:yourApp/build_tool/builder.dart'
+    import: 'package:yourApp/builder.dart'
     builder_factories: ['mybuilderGenerator']
     build_extensions: {
       '.proto': ['.pbjson.dart', '.pb.dart', '.pbenum.dart']
@@ -45,17 +60,26 @@ builders:
     auto_apply: root_package
     build_to: source
     defaults:
-      options: {'output': 'lib/service/messages' }
+      options: {'output': 'lib' }
 targets:
   $default:
     sources:
       - lib/**
-      - protocol/**
+      - proto/**
       - $package$
 
 ```
 
-lib/build_tool/builder.dart
+# builder.dart
+
+<!-- TODO:
+    1. builder の説明
+    2. scratch の説明
+    3. buildExtensions の実装の説明 (重複するがよくわかっていない)
+    4. protocでコンパイルしてコピーして消していることを説明
+        - Optionから消す先を指定している
+ -->
+
 ```
 import 'dart:async';
 import 'dart:io';
